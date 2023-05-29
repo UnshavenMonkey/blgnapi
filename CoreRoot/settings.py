@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'core.auth',
     'core.post',
     'core.comment',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -118,6 +119,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 15,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
@@ -155,12 +157,12 @@ DEFAULT_AVATAR_URL = "https://avatars.dicebear.com/api/identicon/.svg"
 
 # Caching
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Balagan API", # название проекта
+    "VERSION": "0.0.1", # версия проекта
+    "SERVE_INCLUDE_SCHEMA": False, # исключить эндпоинт /schema
+    "SWAGGER_UI_SETTINGS": {
+        "filter": True, # включить поиск по тегам
+    },
+    "COMPONENT_SPLIT_REQUEST": True
 }
