@@ -10,7 +10,7 @@ async function start() {
     const app = await NestFactory.create(AppModule)
 
     const config = new DocumentBuilder()
-        .setTitle('Balagan API')
+        .setTitle('BalaganAPI')
         .setDescription('Документация REST API')
         .setVersion('1.0.0')
         .addBearerAuth()
