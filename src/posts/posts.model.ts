@@ -18,7 +18,7 @@ export class Post extends Model<Post, PostCreationAttrs> {
     id: number;
 
     @ApiProperty({example: 'Футбол в 18:00', description: 'Заголовок'})
-    @Column({type: DataType.STRING, unique: true, allowNull: false})
+    @Column({type: DataType.STRING, unique: false, allowNull: false})
     title: string;
 
     @ApiProperty({example: 'Играем в футбол в 18:00 в черкизово', description: 'Текст поста'})
@@ -26,7 +26,7 @@ export class Post extends Model<Post, PostCreationAttrs> {
     content: string;
 
     @ApiProperty({example: '/image.jpg', description: 'Изображение поста', required: false})
-    @Column({type: DataType.STRING})
+    @Column({type: DataType.STRING, allowNull: false})
     image: string;
 
     @ForeignKey(() => User)
