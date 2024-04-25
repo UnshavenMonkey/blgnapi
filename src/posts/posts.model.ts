@@ -26,8 +26,8 @@ export class Post extends Model<Post, PostCreationAttrs> {
     content: string;
 
     @ApiProperty({example: '/image.jpg', description: 'Изображение поста', required: false})
-    @Column({type: DataType.STRING, allowNull: false})
-    image: string;
+    @Column({type: DataType.STRING, allowNull: true})
+    image: string | null;
 
     @ForeignKey(() => User)
     @Column({type: DataType.INTEGER})
