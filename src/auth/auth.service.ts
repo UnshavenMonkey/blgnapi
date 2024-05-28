@@ -11,6 +11,15 @@ export class AuthService {
     constructor(private userService: UsersService,
                 private jwtService: JwtService) {}
 
+    async verifyToken(token: string) {
+        try {
+            const decoded = this.jwtService.verify(token);
+            return decoded;
+        } catch (error) {
+            throw new UnauthorizedException('Invalid token');
+        }
+    }
+
     async login(userDto: CreateUserDto) {
         const user = await this.validateUser(userDto)
         return this.generateToken(user)

@@ -1,4 +1,4 @@
-import {Module} from "@nestjs/common";
+import {MiddlewareConsumer, Module, NestModule} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
 import { UsersModule } from './users/users.module';
 import {ConfigModule} from "@nestjs/config";
@@ -12,6 +12,7 @@ import {Post} from "./posts/posts.model";
 import { FilesModule } from './files/files.module';
 import {ServeStaticModule} from "@nestjs/serve-static";
 import * as path from 'path';
+import {AuthMiddleware} from "./auth/AuthMiddleware";
 
 @Module({
     controllers: [],
@@ -40,4 +41,10 @@ import * as path from 'path';
         FilesModule,
     ]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(AuthMiddleware)
+            .forRoutes('*'); // Применяет middleware ко всем маршрутам
+    }
+}

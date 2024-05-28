@@ -1,5 +1,5 @@
 {
-  "name": "BalaganAPI",
+  "name": "balagan-api",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -38,7 +38,7 @@
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.4.0",
     "class-validator": "0.12.2",
-    "cross-env": "^7.0.3",
+    "cross-env": "7.0.3",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "reflect-metadata": "^0.1.13",

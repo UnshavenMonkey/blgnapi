@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Req, UploadedFile, UseGuards, UseInterceptors} from '@nestjs/common';
 import {CreatePostDto} from "./dto/create-post.dto";
 import {PostsService} from "./posts.service";
 import {FileInterceptor} from "@nestjs/platform-express";
@@ -20,8 +20,9 @@ export class PostsController {
     @Post()
     @UseInterceptors(FileInterceptor('image'))
     createPost(@Body() dto: CreatePostDto,
-               @UploadedFile() image) {
-        return this.postService.create(dto, image)
+               @UploadedFile() image, @Req() req) {
+        const userId = req.user.id;
+        return this.postService.create(dto, image, userId)
     }
 
     @ApiOperation({summary: 'Получить все посты'})
