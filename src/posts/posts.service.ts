@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import {ForbiddenException, Injectable, NotFoundException} from '@nestjs/common';
 import {CreatePostDto} from "./dto/create-post.dto";
 import {InjectModel} from "@nestjs/sequelize";
 import {Post} from "./posts.model";
@@ -43,5 +43,19 @@ export class PostsService {
     async getAllUserPosts(id: number) {
         const posts = await this.postRepository.findAll({where:{author: id}});
         return posts;
+    }
+
+    async deletePost(postId: number, user: User): Promise<void> {
+        const post = await this.postRepository.findOne({ where: { id: postId } });
+
+        if (!post) {
+            throw new NotFoundException('Post not found');
+        }
+
+        if (post.userId !== user.id && (user.roles.value !== 'ADMIN')) {
+            throw new ForbiddenException('Permission denied');
+        }
+
+        await this.postRepository.destroy({ where: { id: postId } });
     }
 }

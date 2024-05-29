@@ -1,4 +1,15 @@
-import {Body, Controller, Get, Param, Post, Req, UploadedFile, UseGuards, UseInterceptors} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Req,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors
+} from '@nestjs/common';
 import {CreatePostDto} from "./dto/create-post.dto";
 import {PostsService} from "./posts.service";
 import {FileInterceptor} from "@nestjs/platform-express";
@@ -7,6 +18,7 @@ import {User} from "../users/users.model";
 import {Roles} from "../auth/roles-auth.decorator";
 import {RolesGuard} from "../auth/roles.guard";
 import {Post as Posts} from "../posts/posts.model";
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 @ApiBearerAuth()
 @ApiTags('Посты')
 @Controller('posts')
@@ -46,6 +58,13 @@ export class PostsController {
     @Get('/:id')
     getAllUserPosts(@Param('id') id: number) {
         return this.postService.getAllUserPosts(id);
+    }
+
+    @Delete(':id')
+    @UseGuards(JwtAuthGuard)
+    async deletePost(@Param('id') id: string, @Req() req): Promise<void> {
+        const user = req.user;
+        await this.postService.deletePost(+id, user);
     }
 
 }
