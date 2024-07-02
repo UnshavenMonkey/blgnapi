@@ -26,7 +26,7 @@ export class PostsService {
             throw new NotFoundException('User not found');
         }
 
-        const post = await this.postRepository.create({...dto, author: user.email})
+        const post = await this.postRepository.create({...dto, author: user.email, userId: user.id});
         return post;
     }
 

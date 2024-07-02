@@ -46,7 +46,7 @@ export class PostsController {
 
     @ApiOperation({summary: 'Получить пост по id'})
     @ApiResponse({status: 200, type: Posts})
-    @Roles("admin")
+    @Roles("ADMIN")
     @Get('/:id')
     getPost(@Param('id') id: number) {
         return this.postService.getPost(id);
@@ -54,7 +54,7 @@ export class PostsController {
 
     @ApiOperation({summary: 'Получить посты по id пользователя'})
     @ApiResponse({status: 200, type: [Posts]})
-    @Roles("admin")
+    @Roles("ADMIN")
     @Get('/:id')
     getAllUserPosts(@Param('id') id: number) {
         return this.postService.getAllUserPosts(id);

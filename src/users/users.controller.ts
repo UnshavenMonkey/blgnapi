@@ -26,7 +26,7 @@ export class UsersController {
 
     @ApiOperation({summary: 'Получить всех пользователей'})
     @ApiResponse({status: 200, type: [User]})
-    @Roles("admin")
+    @Roles("ADMIN")
     // @UseGuards(RolesGuard)
     @Get()
     getAll() {
@@ -35,7 +35,7 @@ export class UsersController {
 
     @ApiOperation({summary: 'Получить пользователя по id'})
     @ApiResponse({status: 200, type: User})
-    @Roles("admin")
+    @Roles("ADMIN")
     @UseGuards(RolesGuard)
     @Get('/:id')
     getUser(@Param('id') id: number) {
