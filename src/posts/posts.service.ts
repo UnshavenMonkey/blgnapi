@@ -4,6 +4,8 @@ import {InjectModel} from "@nestjs/sequelize";
 import {Post} from "./posts.model";
 import {FilesService} from "../files/files.service";
 import {User} from "../users/users.model";
+import {Op} from "sequelize";
+import {of} from "rxjs";
 
 @Injectable()
 export class PostsService {
@@ -30,9 +32,37 @@ export class PostsService {
         return post;
     }
 
-    async getAllPosts() {
-        const posts = await this.postRepository.findAll({include: {all: true}});
-        return posts;
+    async getAllPosts(page: number = 1, limit: number = 10, startDate?: string, endDate?: string) {
+        const offset = (page - 1) * limit;
+        const where: any = {};
+        if (startDate && endDate) {
+            where.eventDate = {
+                [Op.between]: [new Date(startDate), new Date(endDate)]
+            };
+        } else if (startDate) {
+            where.eventDate = {
+                [Op.gte]: new Date(startDate)
+            };
+        } else if (endDate) {
+            where.eventDate = {
+                [Op.lte]: new Date(endDate)
+            };
+        }
+
+        const { rows, count } = await this.postRepository.findAndCountAll({
+            where,
+            limit,
+            offset,
+            include: { all: true },
+        });
+        return {
+            posts: rows,
+            total: count,
+            page,
+            limit,
+        };
+        // const posts = await this.postRepository.findAll({include: {all: true}});
+        // return posts;
     }
 
     async getPost(id: number) {

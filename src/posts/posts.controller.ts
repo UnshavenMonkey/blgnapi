@@ -4,7 +4,7 @@ import {
     Delete,
     Get,
     Param,
-    Post,
+    Post, Query,
     Req,
     UploadedFile,
     UseGuards,
@@ -19,6 +19,7 @@ import {Roles} from "../auth/roles-auth.decorator";
 import {RolesGuard} from "../auth/roles.guard";
 import {Post as Posts} from "../posts/posts.model";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
+import {GetPostsDto} from "./dto/get-posts.dto";
 @ApiBearerAuth()
 @ApiTags('Посты')
 @Controller('posts')
@@ -40,8 +41,9 @@ export class PostsController {
     @ApiOperation({summary: 'Получить все посты'})
     @ApiResponse({status: 200, type: [Posts]})
     @Get()
-    getAll() {
-        return this.postService.getAllPosts();
+    getAll(@Query() query: GetPostsDto) {
+        const { page, limit, startDate, endDate } = query;
+        return this.postService.getAllPosts(page, limit, startDate, endDate);
     }
 
     @ApiOperation({summary: 'Получить пост по id'})
