@@ -20,6 +20,14 @@ async function start() {
 
     app.useGlobalPipes(new ValidationPipe())
 
+    // Enable CORS
+    app.enableCors({
+        origin: 'http://localhost:5173', // Разрешить запросы только с localhost
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Указать разрешенные методы
+        allowedHeaders: 'Content-Type, Accept, Authorization', // Указать разрешенные заголовки
+        credentials: true, // Если необходимо разрешить запросы с передачей учетных данных (куки, заголовки авторизации)
+    });
+
     await app.listen(PORT, () => console.log(`Server started on port = ${PORT}`))
 }
 

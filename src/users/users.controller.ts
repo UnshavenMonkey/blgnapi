@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, UseGuards, UsePipes} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, UseGuards, Request} from '@nestjs/common';
 import {CreateUserDto} from "./dto/create-user.dto";
 import {UsersService} from "./users.service";
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
@@ -16,6 +16,15 @@ import {ValidationPipe} from "../pipes/validation.pipe";
 export class UsersController {
 
     constructor(private usersService: UsersService) {}
+
+    @ApiOperation({summary: 'Получить информацию о текущем пользователе'})
+    @ApiResponse({status: 200, type: User})
+    @UseGuards(JwtAuthGuard)
+    @Get('/current')
+    getCurrentUser(@Request() req) {
+        const userId = req.user.id;
+        return this.usersService.getCurrentUser(userId);
+    }
 
     @ApiOperation({summary: 'Создание пользователя'})
     @ApiResponse({status: 200, type: User})

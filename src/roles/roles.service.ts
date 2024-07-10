@@ -15,7 +15,11 @@ export class RolesService {
 
     async getRoleByValue(value: string) {
         const role = await this.roleRepository.findOne({where: {value}})
-        return role;
+        if (!role) {
+            await this.roleRepository.create({value: "USER", description: "Пользователь"})
+            return this.roleRepository.findOne({where: {value: "USER"}})
+        } else {
+            return role;
+        }
     }
-
 }

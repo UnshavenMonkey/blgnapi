@@ -21,6 +21,30 @@ export class User extends Model<User, UserCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: false})
     password: string;
 
+    @ApiProperty({example: '/avatar.jpg', description: 'Аватар', required: false})
+    @Column({type: DataType.STRING, allowNull: true})
+    avatar: string | null;
+
+    @ApiProperty({example: 'Иван', description: 'Имя'})
+    @Column({type: DataType.STRING, allowNull: true})
+    firstName: string;
+
+    @ApiProperty({example: 'Иванов', description: 'Фамилия'})
+    @Column({type: DataType.STRING, allowNull: true})
+    lastName: string;
+
+    @ApiProperty({example: '+72223332233', description: 'Телефон'})
+    @Column({type: DataType.STRING, allowNull: true})
+    phone: string;
+
+    @ApiProperty({example: '@username', description: 'WhatsApp'})
+    @Column({type: DataType.STRING, allowNull: true})
+    watsap: string;
+
+    @ApiProperty({example: '@username', description: 'Telegram'})
+    @Column({type: DataType.STRING, allowNull: true})
+    telegram: string;
+
     @ApiProperty({example: 'true', description: 'Забанен или нет'})
     @Column({type: DataType.BOOLEAN, defaultValue: false})
     banned: boolean;

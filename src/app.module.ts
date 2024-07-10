@@ -1,15 +1,15 @@
-import {MiddlewareConsumer, Module, NestModule} from "@nestjs/common";
+import {MiddlewareConsumer, Module, NestModule, RequestMethod} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
-import { UsersModule } from './users/users.module';
+import {UsersModule} from './users/users.module';
 import {ConfigModule} from "@nestjs/config";
 import {User} from "./users/users.model";
-import { RolesModule } from './roles/roles.module';
+import {RolesModule} from './roles/roles.module';
 import {Role} from "./roles/roles.model";
 import {UserRoles} from "./roles/user-roles.model";
-import { AuthModule } from './auth/auth.module';
-import { PostsModule } from './posts/posts.module';
+import {AuthModule} from './auth/auth.module';
+import {PostsModule} from './posts/posts.module';
 import {Post} from "./posts/posts.model";
-import { FilesModule } from './files/files.module';
+import {FilesModule} from './files/files.module';
 import {ServeStaticModule} from "@nestjs/serve-static";
 import * as path from 'path';
 import {AuthMiddleware} from "./auth/AuthMiddleware";
@@ -45,6 +45,6 @@ export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(AuthMiddleware)
-            .forRoutes('*'); // Применяет middleware ко всем маршрутам
+            .forRoutes({path: '*', method: RequestMethod.POST}, {path: '*', method: RequestMethod.DELETE}, {path: '*', method: RequestMethod.PUT}, {path: '*', method: RequestMethod.PATCH}); // Применяет middleware ко всем маршрутам
     }
 }
