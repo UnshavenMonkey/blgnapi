@@ -6,7 +6,7 @@ import {User} from "../users/users.model";
 import {Role} from "./roles.model";
 
 @ApiTags('Роли')
-@Controller('roles')
+@Controller('api/roles')
 export class RolesController {
     constructor(private roleService: RolesService) {}
 

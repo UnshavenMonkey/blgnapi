@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, UseGuards, Request} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, UseGuards, Request, Put} from '@nestjs/common';
 import {CreateUserDto} from "./dto/create-user.dto";
 import {UsersService} from "./users.service";
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
@@ -9,10 +9,11 @@ import {RolesGuard} from "../auth/roles.guard";
 import {AddRoleDto} from "./dto/add-role.dto";
 import {BanUserDto} from "./dto/ban-user.dto";
 import {ValidationPipe} from "../pipes/validation.pipe";
+import {UpdateUserDto} from "./dto/update-user.dto";
 
 @ApiBearerAuth()
 @ApiTags('Пользователи')
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
 
     constructor(private usersService: UsersService) {}
@@ -31,6 +32,14 @@ export class UsersController {
     @Post()
     create(@Body() userDto: CreateUserDto) {
         return this.usersService.createUser(userDto);
+    }
+
+    @ApiOperation({summary: 'Редактировать профиль пользователя'})
+    @ApiResponse({status: 200, type: User})
+    @Put('/profile')
+    updateProfile(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+        const userId = req.user.id;
+        return this.usersService.updateUser(userId, updateUserDto);
     }
 
     @ApiOperation({summary: 'Получить всех пользователей'})

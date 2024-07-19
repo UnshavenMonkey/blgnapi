@@ -42,7 +42,7 @@ export class AuthService {
 
     private async generateToken(user: User) {
         const payload = {email: user.email, id: user.id, roles: user.roles}
-        const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
+        const accessToken = this.jwtService.sign(payload, { expiresIn: '45m' });
         const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
         return {
             accessToken: accessToken,
@@ -62,8 +62,9 @@ export class AuthService {
 
     async refreshToken(token: string) {
         try {
+
             const payload = this.jwtService.verify(token);
-            const newAccessToken = this.jwtService.sign({ username: payload.username, sub: payload.sub }, { expiresIn: '15m' });
+            const newAccessToken = this.jwtService.sign({ username: payload.username, sub: payload.sub }, { expiresIn: '45m' });
             const newRefreshToken = this.jwtService.sign({ username: payload.username, sub: payload.sub }, { expiresIn: '7d' });
 
             return {

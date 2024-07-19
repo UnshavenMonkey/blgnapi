@@ -22,7 +22,7 @@ import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 import {GetPostsDto} from "./dto/get-posts.dto";
 @ApiBearerAuth()
 @ApiTags('Посты')
-@Controller('posts')
+@Controller('api/posts')
 export class PostsController {
 
     constructor(private postService: PostsService) {}

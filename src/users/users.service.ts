@@ -5,6 +5,7 @@ import {CreateUserDto} from "./dto/create-user.dto";
 import {RolesService} from "../roles/roles.service";
 import {AddRoleDto} from "./dto/add-role.dto";
 import {BanUserDto} from "./dto/ban-user.dto";
+import {UpdateUserDto} from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,15 @@ export class UsersService {
         const role = await this.roleService.getRoleByValue("USER")
         await user.$set('roles', [role.id])
         user.roles = role
+        return user;
+    }
+
+    async updateUser(id: number, dto: UpdateUserDto) {
+        const user = await this.userRepository.findByPk(id);
+        if (!user) {
+            throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
+        }
+        await user.update(dto);
         return user;
     }
 
