@@ -1,7 +1,18 @@
-import {Body, Controller, Get, Param, Post, UseGuards, Request, Put} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    UseGuards,
+    Request,
+    Put,
+    UseInterceptors,
+    UploadedFile
+} from '@nestjs/common';
 import {CreateUserDto} from "./dto/create-user.dto";
 import {UsersService} from "./users.service";
-import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiConsumes, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {User} from "./users.model";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 import {Roles} from "../auth/roles-auth.decorator";
@@ -10,6 +21,7 @@ import {AddRoleDto} from "./dto/add-role.dto";
 import {BanUserDto} from "./dto/ban-user.dto";
 import {ValidationPipe} from "../pipes/validation.pipe";
 import {UpdateUserDto} from "./dto/update-user.dto";
+import {FileInterceptor} from "@nestjs/platform-express";
 
 @ApiBearerAuth()
 @ApiTags('Пользователи')
@@ -36,10 +48,12 @@ export class UsersController {
 
     @ApiOperation({summary: 'Редактировать профиль пользователя'})
     @ApiResponse({status: 200, type: User})
+    @ApiConsumes('multipart/form-data')
+    @UseInterceptors(FileInterceptor('avatar'))
     @Put('/profile')
-    updateProfile(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+    updateProfile(@Request() req, @Body() updateUserDto: UpdateUserDto, @UploadedFile() avatar) {
         const userId = req.user.id;
-        return this.usersService.updateUser(userId, updateUserDto);
+        return this.usersService.updateUser(userId, updateUserDto, avatar);
     }
 
     @ApiOperation({summary: 'Получить всех пользователей'})

@@ -6,12 +6,13 @@ import {RolesService} from "../roles/roles.service";
 import {AddRoleDto} from "./dto/add-role.dto";
 import {BanUserDto} from "./dto/ban-user.dto";
 import {UpdateUserDto} from "./dto/update-user.dto";
+import {FilesService} from "../files/files.service";
 
 @Injectable()
 export class UsersService {
 
     constructor(@InjectModel(User) private userRepository: typeof User,
-                private roleService: RolesService) {}
+                private roleService: RolesService, private fileService: FilesService) {}
 
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto);
@@ -21,10 +22,16 @@ export class UsersService {
         return user;
     }
 
-    async updateUser(id: number, dto: UpdateUserDto) {
+    async updateUser(id: number,  dto: UpdateUserDto, avatar: any) {
         const user = await this.userRepository.findByPk(id);
         if (!user) {
             throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
+        }
+        if (!!avatar) {
+            const fileName = await this.fileService.createFile(avatar);
+            dto.avatar = fileName
+        } else {
+            dto.avatar = null
         }
         await user.update(dto);
         return user;

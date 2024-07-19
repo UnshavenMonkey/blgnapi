@@ -4,7 +4,7 @@ import { IsString} from "class-validator";
 
 export class UpdateUserDto {
 
-    @ApiProperty({example: '/avatar.jpg', description: 'Аватар', required: false})
+    @ApiProperty({example: '/avatar.jpg', description: 'Аватар', required: false, format: 'binary'})
     avatar?: string | null;
 
     @ApiProperty({example: 'Иван', description: 'Имя', required: false})
