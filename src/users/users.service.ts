@@ -31,7 +31,7 @@ export class UsersService {
             const fileName = await this.fileService.createFile(avatar);
             dto.avatar = fileName
         } else {
-            dto.avatar = null
+            dto.avatar = user.avatar || null
         }
         await user.update(dto);
         return user;
